@@ -4,10 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Counter App</title>
-  <script type="module" src="./counter-app.js"></script>
+  <script type="module" src="counter-app.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
-  <counter-app></counter-app>
-  <counter-app counter="16" min="10" max="25"></counter-app>
+  <counter-app counter="10" min="0" max="25"></counter-app>
+  <counter-app counter="5" min="0" max="20"></counter-app>
 </body>
 </html>
