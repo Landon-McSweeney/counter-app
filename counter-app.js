@@ -1,6 +1,6 @@
-import { LitElement, html, css } from "lit";
+import { LitElement, html, css } from 'lit';
 
-export class CounterApp extends LitElement {
+class CounterApp extends LitElement {
   static properties = {
     counter: { type: Number },
     min: { type: Number },
@@ -9,45 +9,31 @@ export class CounterApp extends LitElement {
 
   constructor() {
     super();
-    this.counter = 16;
-    this.min = 10;
-    this.max = 25;
+    this.counter = 0;
+    this.min = 0;
+    this.max = 10;
   }
 
-  static styles = css`
-    .counter {
-      font-size: 32px;
-      font-weight: bold;
-    }
-    .buttons {
-      display: flex;
-      gap: 8px;
-    }
-    button {
-      padding: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  `;
-
   updated(changedProperties) {
-    if (changedProperties.has("counter") && this.counter === 21) {
-      this.makeItRain();
+    super.updated(changedProperties);
+
+    if (changedProperties.has('counter')) {
+      // Trigger confetti effect when counter reaches 21
+      if (this.counter === 21) {
+        this.makeItRain();
+      }
     }
   }
 
   makeItRain() {
-    import("@haxtheweb/multiple-choice/lib/confetti-container.js").then(() => {
+    import("@haxtheweb/multiple-choice/lib/confetti-container.js").then((module) => {
       setTimeout(() => {
         this.shadowRoot.querySelector("#confetti").setAttribute("popped", "");
       }, 0);
     });
   }
 
+  // Example increment and decrement methods
   increment() {
     if (this.counter < this.max) {
       this.counter++;
@@ -62,17 +48,15 @@ export class CounterApp extends LitElement {
 
   render() {
     return html`
-      <confetti-container id="confetti">
-        <div class="counter" style="color: ${this.counter >= 21 ? 'green' : this.counter >= 18 ? 'blue' : 'black'};">
-          ${this.counter}
-        </div>
-        <div class="buttons">
-          <button @click="${this.decrement}" ?disabled="${this.counter === this.min}">-</button>
-          <button @click="${this.increment}" ?disabled="${this.counter === this.max}">+</button>
-        </div>
-      </confetti-container>
+      <div>
+        <p>${this.counter}</p>
+        <button @click="${this.increment}">+</button>
+        <button @click="${this.decrement}">-</button>
+        <confetti-container id="confetti"></confetti-container>
+      </div>
     `;
   }
 }
 
-customElements.define("counter-app", CounterApp);
+customElements.define('counter-app', CounterApp);
+
