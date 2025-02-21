@@ -1,4 +1,4 @@
-import { html, css, LitElement } from 'lit';
+import { LitElement, html, css } from "lit";
 
 class CounterApp extends LitElement {
   static properties = {
@@ -9,95 +9,111 @@ class CounterApp extends LitElement {
 
   constructor() {
     super();
-    this.counter = 0;
-    this.min = 0;
-    this.max = 10;
+    this.counter = 16;
+    this.min = 10;
+    this.max = 25;
   }
 
   static styles = css`
     :host {
       display: block;
-      font-family: Arial, sans-serif;
-      --button-size: 40px;
-      --button-spacing: 8px;
-      --number-color: black;
-      --highlight-color: red;
-    }
-
-    .counter {
       text-align: center;
+      font-family: Arial, sans-serif;
     }
-
-    .counter p {
-      font-size: 48px;
-      color: var(--number-color);
+    .counter {
+      font-size: 3rem;
+      margin-bottom: 16px;
     }
-
-    .counter button {
-      width: var(--button-size);
-      height: var(--button-size);
-      font-size: 24px;
-      margin: 0 var(--button-spacing);
+    .buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+    button {
+      font-size: 1.5rem;
+      padding: 8px 16px;
       cursor: pointer;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 4px;
     }
-
-    .counter button:focus {
-      outline: none;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    button:hover {
+      background-color: #0056b3;
     }
-
-    .counter button:disabled {
-      background-color: lightgray;
+    button:disabled {
+      background-color: #ccc;
       cursor: not-allowed;
+    }
+    .counter.low {
+      color: red;
+    }
+    .counter.mid {
+      color: orange;
+    }
+    .counter.high {
+      color: green;
     }
   `;
 
   render() {
     return html`
-      <div class="counter">
-        <p style="color: ${this.getCounterColor()}">${this.counter}</p>
-        <button @click="${this.decrement}" ?disabled="${this.counter <= this.min}">-</button>
-        <button @click="${this.increment}" ?disabled="${this.counter >= this.max}">+</button>
-      </div>
-      <confetti-container id="confetti"></confetti-container>
+      <confetti-container id="confetti">
+        <div class="counter ${this.getCounterClass()}">${this.counter}</div>
+        <div class="buttons">
+          <button @click="${this.decrement}" ?disabled="${this.counter <= this.min}">-</button>
+          <button @click="${this.increment}" ?disabled="${this.counter >= this.max}">+</button>
+        </div>
+      </confetti-container>
     `;
   }
+
   increment() {
     if (this.counter < this.max) {
       this.counter++;
-      this.requestUpdate();
     }
   }
 
   decrement() {
     if (this.counter > this.min) {
       this.counter--;
-      this.requestUpdate();
     }
-  }
-
-  getCounterColor() {
-    if (this.counter === 18 || this.counter === 21 || this.counter === this.max || this.counter === this.min) {
-      return this.counter === 21 ? 'green' : 'orange'; // Change color on 21 or extremes
-    }
-    return 'black';
   }
 
   updated(changedProperties) {
-    super.updated(changedProperties);
-    if (changedProperties.has('counter') && this.counter === 21) {
+    if (super.updated) {
+      super.updated(changedProperties);
+    }
+    if (changedProperties.has("counter") && this.counter === 21) {
       this.makeItRain();
     }
   }
 
   makeItRain() {
-    // Dynamically import the confetti container and trigger the animation
-    import('@haxtheweb/multiple-choice/lib/confetti-container.js').then(() => {
+    import("@haxtheweb/multiple-choice/lib/confetti-container.js").then(() => {
       setTimeout(() => {
-        this.shadowRoot.querySelector('#confetti').setAttribute('popped', '');
+        const confetti = this.shadowRoot.querySelector("#confetti");
+        if (confetti) {
+          confetti.setAttribute("popped", "");
+        } else {
+          console.error("Confetti container not found!");
+        }
       }, 0);
-    });
+    }).catch(err => console.error("Confetti import failed:", err));
+  }
+
+  getCounterClass() {
+    if (this.counter === this.min || this.counter === this.max) {
+      return "low";
+    }
+    if (this.counter >= 18 && this.counter < 21) {
+      return "mid";
+    }
+    if (this.counter >= 21) {
+      return "high";
+    }
+    return "";
   }
 }
 
-customElements.define('counter-app', CounterApp);
+customElements.define("counter-app", CounterApp);

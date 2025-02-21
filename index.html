@@ -4,7 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Counter App</title>
-  <script type="module" src="counter-app.js"></script>
+  <script type="module" src="./src/counter-app.js"></script>
+</head>
+<body>
+  <counter-app></counter-app>
+  <counter-app counter="16" min="10" max="25"></counter-app>
+</body>
+</html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counter App</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,11 +24,54 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      background-color: #f0f0f0;
+    }
+    .counter-container {
+      text-align: center;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .counter {
+      font-size: 2em;
+      margin: 20px 0;
+    }
+    .buttons button {
+      font-size: 1em;
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .buttons button:active {
+      transform: scale(0.95);
     }
   </style>
 </head>
 <body>
-  <counter-app counter="10" min="0" max="25"></counter-app>
-  <counter-app counter="5" min="0" max="20"></counter-app>
+  <div class="counter-container">
+    <h1>Counter App</h1>
+    <div class="counter" id="counter">0</div>
+    <div class="buttons">
+      <button onclick="decrement()">-</button>
+      <button onclick="increment()">+</button>
+    </div>
+  </div>
+
+  <script>
+    let count = 0;
+
+    function increment() {
+      count++;
+      document.getElementById('counter').innerText = count;
+    }
+
+    function decrement() {
+      count--;
+      document.getElementById('counter').innerText = count;
+    }
+  </script>
 </body>
 </html>
