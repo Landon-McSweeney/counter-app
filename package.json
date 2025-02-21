@@ -1,0 +1,25 @@
+{
+  "name": "counter-app",
+  "version": "1.0.0",
+  "main": "index.js",
+
+  "scripts": {
+    "start": "serve ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Landon-McSweeney/counter-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Landon-McSweeney/counter-app/issues"
+  },
+  "homepage": "https://github.com/Landon-McSweeney/counter-app#readme",
+  "description": "",
+  "dependencies": {
+    "@haxtheweb/multiple-choice": "^10.0.2",
+    "lit": "^3.2.1"
+  }
+}
